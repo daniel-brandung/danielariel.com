@@ -10,12 +10,22 @@ export default function CvPage() {
   return (
     <div className="min-h-svh bg-white">
       <main className="mx-auto max-w-[760px] bg-white p-10 font-sans text-neutral-900 print:p-0">
-      <header className="border-b-2 border-neutral-900 pb-4">
-        <h1 className="text-3xl font-bold">{site.name}</h1>
-        <p className="mt-1 text-lg">Senior AI Consultant &amp; Senior Frontend Developer</p>
-        <p className="mt-2 text-sm text-neutral-600">
-          {site.location} · {site.email} · linkedin.com/in/danielariel
-        </p>
+      <header className="flex items-start justify-between gap-6 border-b-2 border-neutral-900 pb-4">
+        <div>
+          <h1 className="text-3xl font-bold">{site.name}</h1>
+          <p className="mt-1 text-lg">Senior AI Consultant &amp; Senior Frontend Developer</p>
+          <p className="mt-2 text-sm text-neutral-600">
+            {site.location} · {site.email} · linkedin.com/in/danielariel · danielariel.com
+          </p>
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element -- fixed-size print asset, no optimization wanted in the PDF */}
+        <img
+          src="/cv-photo.jpg"
+          alt=""
+          width={96}
+          height={96}
+          className="size-24 shrink-0 rounded-full object-cover"
+        />
       </header>
 
       <section className="mt-6">
