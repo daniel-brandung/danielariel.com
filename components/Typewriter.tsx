@@ -22,10 +22,11 @@ export function Typewriter({ words }: { words: readonly string[] }) {
       else t = setTimeout(() => setErasing(true), HOLD_MS);
     } else {
       if (len > 0) t = setTimeout(() => setLen(len - 1), ERASE_MS);
-      else {
-        setWordIndex((wordIndex + 1) % words.length);
-        setErasing(false);
-      }
+      else
+        t = setTimeout(() => {
+          setWordIndex((i) => (i + 1) % words.length);
+          setErasing(false);
+        }, TYPE_MS);
     }
     return () => clearTimeout(t);
   }, [len, erasing, wordIndex, words, reduce]);

@@ -9,7 +9,10 @@ export function Footer() {
         </p>
         <p>
           Built with Next.js —{" "}
-          <a href="#top" className="text-accent hover:text-accent-soft">
+          <a
+            href="#top"
+            className="text-accent underline underline-offset-4 hover:text-accent-soft"
+          >
             back to top ↑
           </a>
         </p>
