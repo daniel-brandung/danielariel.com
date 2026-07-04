@@ -31,3 +31,10 @@ body {
   background: var(--color-accent);
   color: var(--color-bg);
 }
+
+@media print {
+  body {
+    /* the bg-bg utility class on <body> out-specifies an element selector */
+    background: #fff !important;
+  }
+}
