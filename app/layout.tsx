@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 const title = "Daniel Ariel — Senior AI Consultant & Senior Frontend Developer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://danielariel-seven.vercel.app"),
+  metadataBase: new URL("https://danielariel.com"),
   title,
   description: site.tagline,
   openGraph: {
@@ -34,7 +34,7 @@ const personJsonLd = {
   name: site.name,
   jobTitle: "Senior AI Consultant & Senior Frontend Developer",
   email: `mailto:${site.email}`,
-  url: "https://danielariel-seven.vercel.app",
+  url: "https://danielariel.com",
   sameAs: [site.linkedin],
   address: { "@type": "PostalAddress", addressLocality: "Berlin", addressCountry: "DE" },
   knowsLanguage: ["en", "he", "de"],
