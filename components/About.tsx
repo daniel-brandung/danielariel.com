@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
 import { site } from "@/lib/content";
@@ -14,10 +15,19 @@ export function About() {
           ))}
         </div>
         <Reveal delay={0.2} className="hidden md:block">
-          {/* Portrait slot: when a public/portrait.jpg exists, swap the
-              monogram div for <Image src="/portrait.jpg" alt="Daniel Ariel" …/>. */}
-          <div className="flex aspect-square items-center justify-center rounded border border-line bg-surface">
-            <span className="font-mono text-4xl text-accent">{site.initials}</span>
+          <div className="relative flex aspect-square items-end justify-center overflow-hidden rounded border border-line bg-surface">
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-[radial-gradient(ellipse_75%_60%_at_50%_80%,rgba(52,211,153,0.16),transparent_70%)]"
+            />
+            <Image
+              src="/portrait.png"
+              alt={`Portrait of ${site.name}`}
+              width={802}
+              height={900}
+              sizes="(min-width: 768px) 33vw, 0px"
+              className="relative w-[88%] object-contain object-bottom [filter:drop-shadow(0_0_28px_rgba(52,211,153,0.18))]"
+            />
           </div>
         </Reveal>
       </div>
