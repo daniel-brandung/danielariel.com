@@ -10,6 +10,13 @@ export const SPAWN_INTERVAL_END = 0.8;
 export const CHICKEN_WIDTH = 96;
 export const CHICKEN_HEIGHT = 84;
 
+// Private constants for spawning and physics
+const GRAVITY = 1400; // px/s² for falling chickens
+const OFFSCREEN_MARGIN = 80;
+// Exported: the component's renderer needs the same lifetimes for fade-out math
+export const POPUP_SECONDS = 0.8;
+export const BURST_SECONDS = 0.5;
+
 export type Layer = "far" | "mid" | "near";
 
 export interface LayerSpec {
@@ -128,9 +135,31 @@ export function startReload(state: GameState): Tick {
   };
 }
 
+function spawnInterval(timeLeft: number): number {
+  const progress = 1 - timeLeft / ROUND_SECONDS;
+  return SPAWN_INTERVAL_START + (SPAWN_INTERVAL_END - SPAWN_INTERVAL_START) * progress;
+}
+
+function spawnChicken(nextId: number, rand: () => number): Chicken {
+  const layers: Layer[] = ["far", "mid", "near"];
+  const layer = layers[Math.min(2, Math.floor(rand() * 3))];
+  const spec = LAYERS[layer];
+  const fromLeft = rand() < 0.5;
+  const speed = spec.speedMin + rand() * (spec.speedMax - spec.speedMin);
+  const halfW = (CHICKEN_WIDTH * spec.scale) / 2;
+  return {
+    id: nextId,
+    layer,
+    x: fromLeft ? -halfW : VIRTUAL_WIDTH + halfW,
+    y: spec.yMin + rand() * (spec.yMax - spec.yMin),
+    vx: fromLeft ? speed : -speed,
+    falling: false,
+    fallVy: 0,
+  };
+}
+
 export function update(state: GameState, dt: number, rand: () => number): Tick {
   if (state.phase !== "playing") return { state, events: [] };
-  void rand; // used from Task 3 onward
   const events: GameEvent[] = [];
   const next = { ...state };
 
@@ -143,6 +172,29 @@ export function update(state: GameState, dt: number, rand: () => number): Tick {
       next.shells = MAX_SHELLS;
       events.push({ type: "reloadEnd" });
     }
+  }
+
+  next.chickens = next.chickens
+    .map((c) =>
+      c.falling
+        ? { ...c, y: c.y + (c.fallVy + (GRAVITY * dt) / 2) * dt, fallVy: c.fallVy + GRAVITY * dt }
+        : { ...c, x: c.x + c.vx * dt },
+    )
+    .filter((c) => {
+      if (c.falling) return c.y < VIRTUAL_HEIGHT + OFFSCREEN_MARGIN;
+      const halfW = (CHICKEN_WIDTH * LAYERS[c.layer].scale) / 2;
+      return c.x > -halfW - OFFSCREEN_MARGIN && c.x < VIRTUAL_WIDTH + halfW + OFFSCREEN_MARGIN;
+    });
+
+  next.spawnCooldown -= dt;
+  if (next.spawnCooldown <= 0) {
+    const flying = next.chickens.filter((c) => !c.falling).length;
+    if (flying < MAX_CHICKENS) {
+      next.chickens = [...next.chickens, spawnChicken(next.nextId, rand)];
+      next.nextId += 1;
+    }
+    const jitter = 0.7 + rand() * 0.6; // 0.7×–1.3× around the ramp interval
+    next.spawnCooldown = spawnInterval(next.timeLeft) * jitter;
   }
 
   if (next.timeLeft === 0) {
