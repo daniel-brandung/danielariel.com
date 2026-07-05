@@ -14,7 +14,7 @@ export const site = {
     "Helping teams ship faster with composable architecture and AI-driven workflows.",
   about: [
     "I’m Daniel — a Senior AI Consultant and Senior Frontend Developer based in Berlin. I help teams ship faster with composable architecture and AI-driven workflows.",
-    "On the frontend, I craft robust web experiences with React, Next.js, TypeScript, and GraphQL — with meticulous attention to CSS and semantic HTML. On the AI side, I introduce AI-assisted development workflows to engineering teams, integrate LLM-powered features into products, and advise stakeholders on where AI genuinely adds value.",
+    "On the frontend, I craft robust web experiences with React, Next.js, TypeScript, and GraphQL — in composable stacks built on Contentful and Storyblok, with meticulous attention to CSS and semantic HTML. On the AI side, I introduce AI-assisted development workflows to engineering teams, integrate LLM-powered features into products, and advise stakeholders on where AI genuinely adds value.",
     "With a background as a teaching fellow in economics and a PSPO I certificate, I bring analytical rigor and open communication to every phase of the product lifecycle — in English, Hebrew, or German.",
   ],
   whatIDo: [
@@ -38,7 +38,8 @@ export const site = {
       title: "Frontend Engineering",
       bullets: [
         "Enterprise web platforms with React, Next.js, TypeScript, and GraphQL",
-        "Composable architecture: headless CMS, design systems",
+        "Headless CMS expert — deep production experience with Contentful and Storyblok",
+        "Composable architecture and design systems",
         "Meticulous CSS and semantic HTML",
         "Core Web Vitals performance optimization",
       ],
@@ -115,6 +116,8 @@ export const site = {
       group: "Practices",
       items: [
         "Composable architecture",
+        "Contentful",
+        "Storyblok",
         "Design systems",
         "Core Web Vitals",
         "Agile & Scrum",
