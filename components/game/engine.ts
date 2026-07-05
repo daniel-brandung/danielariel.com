@@ -34,6 +34,8 @@ export const LAYERS: Record<Layer, LayerSpec> = {
   near: { points: 5, scale: 1, speedMin: 190, speedMax: 260, yMin: 260, yMax: 470 },
 };
 
+const LAYER_ORDER: Layer[] = ["near", "mid", "far"]; // hit-test priority: nearest first
+
 export interface Chicken {
   id: number;
   layer: Layer;
@@ -114,15 +116,40 @@ export function resume(state: GameState): GameState {
   return state.phase === "paused" ? { ...state, phase: "playing" } : state;
 }
 
+export function hitTest(chicken: Chicken, x: number, y: number): boolean {
+  const spec = LAYERS[chicken.layer];
+  const halfW = (CHICKEN_WIDTH * spec.scale) / 2;
+  const halfH = (CHICKEN_HEIGHT * spec.scale) / 2;
+  return Math.abs(x - chicken.x) <= halfW && Math.abs(y - chicken.y) <= halfH;
+}
+
 export function shoot(state: GameState, x: number, y: number): Tick {
   if (state.phase !== "playing" || state.reloading) return { state, events: [] };
   if (state.shells === 0) return { state, events: [{ type: "empty" }] };
-  void x;
-  void y; // hit detection lands in Task 4
-  return {
-    state: { ...state, shells: state.shells - 1 },
-    events: [{ type: "shot" }],
-  };
+
+  const events: GameEvent[] = [{ type: "shot" }];
+  let next = { ...state, shells: state.shells - 1 };
+
+  let target: Chicken | undefined;
+  for (const layer of LAYER_ORDER) {
+    target = next.chickens.find((c) => !c.falling && c.layer === layer && hitTest(c, x, y));
+    if (target) break;
+  }
+
+  if (target) {
+    const hit = target;
+    const points = LAYERS[hit.layer].points;
+    next = {
+      ...next,
+      score: next.score + points,
+      chickens: next.chickens.map((c) => (c.id === hit.id ? { ...c, falling: true, fallVy: 0 } : c)),
+      popups: [...next.popups, { x: hit.x, y: hit.y, points, age: 0 }],
+      bursts: [...next.bursts, { x: hit.x, y: hit.y, age: 0 }],
+    };
+    events.push({ type: "hit", points, x: hit.x, y: hit.y });
+  }
+
+  return { state: next, events };
 }
 
 export function startReload(state: GameState): Tick {
@@ -196,6 +223,13 @@ export function update(state: GameState, dt: number, rand: () => number): Tick {
     const jitter = 0.7 + rand() * 0.6; // 0.7×–1.3× around the ramp interval
     next.spawnCooldown = spawnInterval(next.timeLeft) * jitter;
   }
+
+  next.popups = next.popups
+    .map((p) => ({ ...p, age: p.age + dt }))
+    .filter((p) => p.age < POPUP_SECONDS);
+  next.bursts = next.bursts
+    .map((b) => ({ ...b, age: b.age + dt }))
+    .filter((b) => b.age < BURST_SECONDS);
 
   if (next.timeLeft === 0) {
     next.phase = "ended";
