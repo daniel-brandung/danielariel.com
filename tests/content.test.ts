@@ -15,6 +15,7 @@ describe("site content", () => {
     expect(site.nav.map((n) => n.href)).toEqual([
       "#about",
       "#what-i-do",
+      "#projects",
       "#experience",
       "#skills",
       "#contact",

@@ -4,7 +4,7 @@ import { site } from "@/lib/content";
 
 export function Experience() {
   return (
-    <Section id="experience" number="03" title="Experience">
+    <Section id="experience" number="04" title="Experience">
       <ol className="relative space-y-12 border-l border-line pl-8">
         {site.experience.map((job, i) => (
           <li key={`${job.org}-${job.title}`} className="relative">

@@ -4,7 +4,7 @@ import { site } from "@/lib/content";
 
 export function Skills() {
   return (
-    <Section id="skills" number="04" title="Skills & Credentials">
+    <Section id="skills" number="05" title="Skills & Credentials">
       <div className="space-y-8">
         {site.skills.map((group, gi) => (
           <Reveal key={group.group} delay={gi * 0.08}>

@@ -90,6 +90,73 @@ export const site = {
       ],
     },
   ],
+  projectsIntro:
+    "A selection of client platforms I’ve helped build and ship — from publishing and e-commerce to Europe’s biggest fitness brands.",
+  projects: [
+    {
+      name: "Bastei Lübbe",
+      tag: "publishing",
+      blurb: "Digital platform of one of Germany’s largest publishing houses.",
+      url: "https://bastei-luebbe.de/",
+      domain: "bastei-luebbe.de",
+    },
+    {
+      name: "LYX",
+      tag: "publishing",
+      blurb: "Home of Bastei Lübbe’s bestselling romance imprint.",
+      url: "https://lyx-verlag.de/",
+      domain: "lyx-verlag.de",
+    },
+    {
+      name: "MEDION",
+      tag: "e-commerce",
+      blurb: "Online shop of the consumer-electronics brand (Lenovo Group).",
+      url: "https://www.medion.com/de/shop",
+      domain: "medion.com",
+    },
+    {
+      name: "benuta",
+      tag: "e-commerce",
+      blurb: "E-commerce experience of the leading online rug retailer.",
+      url: "https://www.benuta.de/",
+      domain: "benuta.de",
+    },
+    {
+      name: "EDWIN",
+      tag: "fashion",
+      blurb: "European e-commerce of the Japanese denim heritage brand.",
+      url: "https://edwin-europe.com/de-de",
+      domain: "edwin-europe.com",
+    },
+    {
+      name: "McFIT",
+      tag: "fitness",
+      blurb: "Web platform of Europe’s largest gym chain (RSG Group).",
+      url: "https://www.mcfit.com/",
+      domain: "mcfit.com",
+    },
+    {
+      name: "JOHN REED",
+      tag: "fitness",
+      blurb: "International site of the music-driven fitness club brand.",
+      url: "https://johnreed.fitness/en-de",
+      domain: "johnreed.fitness",
+    },
+    {
+      name: "Gold’s Gym",
+      tag: "fitness",
+      blurb: "German web presence of the iconic gym brand.",
+      url: "https://golds-gym.de/",
+      domain: "golds-gym.de",
+    },
+    {
+      name: "duplo",
+      tag: "fmcg",
+      blurb: "Brand website of Ferrero’s classic chocolate bar.",
+      url: "https://www.duplo.de/",
+      domain: "duplo.de",
+    },
+  ],
   skills: [
     {
       group: "Frontend",
@@ -136,6 +203,7 @@ export const site = {
   nav: [
     { label: "About", href: "#about" },
     { label: "What I Do", href: "#what-i-do" },
+    { label: "Projects", href: "#projects" },
     { label: "Experience", href: "#experience" },
     { label: "Skills", href: "#skills" },
     { label: "Contact", href: "#contact" },

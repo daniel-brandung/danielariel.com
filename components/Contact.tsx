@@ -19,7 +19,7 @@ export function Contact() {
   };
 
   return (
-    <Section id="contact" number="05" title="Contact">
+    <Section id="contact" number="06" title="Contact">
       <Reveal>
         <h2 className="max-w-2xl text-balance text-4xl font-semibold tracking-tight md:text-6xl">
           Let’s build something.
