@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/content";
@@ -14,6 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 const title = "Daniel Ariel — Senior AI Consultant & Senior Frontend Developer";
+
+export const viewport: Viewport = {
+  themeColor: "#0a0a0a",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://danielariel.com"),
@@ -56,6 +60,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <div aria-hidden className="grain pointer-events-none fixed inset-0 z-[70] opacity-[0.025] print:hidden" />
         {children}
       </body>
     </html>

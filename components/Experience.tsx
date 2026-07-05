@@ -10,15 +10,23 @@ export function Experience() {
           <li key={`${job.org}-${job.title}`} className="relative">
             <span
               aria-hidden
-              className="absolute -left-[37px] top-1.5 size-2.5 rounded-full border border-accent bg-bg"
-            />
+              className={`absolute -left-[37px] top-1.5 size-2.5 rounded-full border border-accent ${
+                job.period.includes("Present") ? "bg-accent" : "bg-bg"
+              }`}
+            >
+              {job.period.includes("Present") && (
+                <span className="absolute inset-0 rounded-full bg-accent/60 motion-safe:animate-ping" />
+              )}
+            </span>
             <Reveal delay={i * 0.08}>
               <p className="font-mono text-sm text-muted">{job.period}</p>
               <h3 className="mt-1 text-lg font-semibold">{job.title}</h3>
               <p className="text-sm text-accent">{job.org}</p>
               <div className="mt-3 space-y-2 text-muted">
                 {job.summary.map((line) => (
-                  <p key={line.slice(0, 24)}>{line}</p>
+                  <p key={line.slice(0, 24)} className="text-pretty">
+                    {line}
+                  </p>
                 ))}
               </div>
             </Reveal>

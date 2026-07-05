@@ -13,7 +13,7 @@ export const site = {
   tagline:
     "Helping teams ship faster with composable architecture and AI-driven workflows.",
   about: [
-    "I'm Daniel — a Senior AI Consultant and Senior Frontend Developer based in Berlin. I help teams ship faster with composable architecture and AI-driven workflows.",
+    "I’m Daniel — a Senior AI Consultant and Senior Frontend Developer based in Berlin. I help teams ship faster with composable architecture and AI-driven workflows.",
     "On the frontend, I craft robust web experiences with React, Next.js, TypeScript, and GraphQL — with meticulous attention to CSS and semantic HTML. On the AI side, I introduce AI-assisted development workflows to engineering teams, integrate LLM-powered features into products, and advise stakeholders on where AI genuinely adds value.",
     "With a background as a teaching fellow in economics and a PSPO I certificate, I bring analytical rigor and open communication to every phase of the product lifecycle — in English, Hebrew, or German.",
   ],
@@ -55,7 +55,7 @@ export const site = {
       org: "BRANDUNG",
       period: "Jun 2023 — Mar 2025",
       summary: [
-        "Led a full business unit — clients, strategy, and delivery — while staying hands-on: roughly 50% of my time spent building, leading the unit's developers as technical lead.",
+        "Led a full business unit — clients, strategy, and delivery — while staying hands-on: roughly 50% of my time spent building, leading the unit’s developers as technical lead.",
         "After the birth of my son, worked part-time for six months, then returned full-time as Senior Frontend Developer & Consultant — a deliberate choice of craft over the management track.",
       ],
     },

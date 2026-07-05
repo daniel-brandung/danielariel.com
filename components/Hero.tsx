@@ -29,15 +29,19 @@ export function Hero() {
         animate="show"
       >
         <motion.p variants={item} className="mb-4 font-mono text-sm text-muted">
-          {site.location}
+          <span className="text-accent">daniel@berlin</span>
+          <span aria-hidden>:~$</span> whoami
         </motion.p>
         <motion.h1 variants={item} className="text-5xl font-semibold tracking-tight md:text-7xl">
           {site.name}
         </motion.h1>
         <motion.p variants={item} className="mt-4 min-h-8 text-xl md:text-2xl">
-          <Typewriter words={site.roles} />
+          <span className="sr-only">{site.roles.join(" · ")}</span>
+          <span aria-hidden>
+            <Typewriter words={site.roles} />
+          </span>
         </motion.p>
-        <motion.p variants={item} className="mt-6 max-w-xl text-lg text-muted">
+        <motion.p variants={item} className="mt-6 max-w-xl text-pretty text-lg text-muted">
           {site.tagline}
         </motion.p>
         <motion.div variants={item} className="mt-10 flex flex-wrap gap-4">
@@ -59,6 +63,22 @@ export function Hero() {
           </motion.a>
         </motion.div>
       </motion.div>
+      <motion.a
+        href="#about"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4, duration: 0.8 }}
+        className="absolute bottom-8 left-1/2 font-mono text-xs text-muted transition-colors hover:text-accent"
+        style={{ x: "-50%" }}
+      >
+        <motion.span
+          className="inline-block"
+          animate={reduce ? undefined : { y: [0, 5, 0] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+        >
+          scroll ↓
+        </motion.span>
+      </motion.a>
     </section>
   );
 }

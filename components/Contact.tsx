@@ -21,14 +21,18 @@ export function Contact() {
   return (
     <Section id="contact" number="05" title="Contact">
       <Reveal>
-        <h2 className="max-w-2xl text-4xl font-semibold tracking-tight md:text-6xl">
+        <h2 className="max-w-2xl text-balance text-4xl font-semibold tracking-tight md:text-6xl">
           Let’s build something.
         </h2>
-        <p className="mt-6 max-w-xl text-lg text-muted">
+        <p className="mt-6 max-w-xl text-pretty text-lg text-muted">
           Open to senior frontend roles and AI consulting engagements — in English,
           Hebrew, or German.
         </p>
-        <div className="mt-10 flex flex-wrap items-center gap-4">
+        <p className="mt-8 font-mono text-sm text-muted">
+          <span aria-hidden>{"// "}</span>
+          based in {site.location}
+        </p>
+        <div className="mt-6 flex flex-wrap items-center gap-4">
           <a
             href={`mailto:${site.email}`}
             className="rounded bg-accent px-6 py-3 font-mono text-bg transition-colors hover:bg-accent-soft"
@@ -37,6 +41,7 @@ export function Contact() {
           </a>
           <button
             onClick={copyEmail}
+            aria-live="polite"
             className="rounded border border-line px-4 py-3 font-mono text-sm text-muted transition-colors hover:border-accent hover:text-accent"
           >
             {copied ? "copied ✓" : "copy"}

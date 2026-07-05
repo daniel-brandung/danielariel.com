@@ -34,11 +34,9 @@ export function Typewriter({ words }: { words: readonly string[] }) {
   if (reduce) return <span className="font-mono text-accent">{words[0]}</span>;
 
   return (
-    <span className="font-mono text-accent" aria-label={words[0]}>
+    <span className="font-mono text-accent">
       {words[wordIndex].slice(0, len)}
-      <span aria-hidden className="animate-pulse">
-        ▌
-      </span>
+      <span className="animate-pulse">▌</span>
     </span>
   );
 }

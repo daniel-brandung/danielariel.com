@@ -10,7 +10,7 @@ export function About() {
         <div className="space-y-5 text-lg leading-relaxed text-muted">
           {site.about.map((paragraph, i) => (
             <Reveal key={paragraph.slice(0, 24)} delay={i * 0.1}>
-              <p>{paragraph}</p>
+              <p className="text-pretty">{paragraph}</p>
             </Reveal>
           ))}
         </div>

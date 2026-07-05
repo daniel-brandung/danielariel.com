@@ -8,7 +8,7 @@ export function WhatIDo() {
       <div className="grid gap-6 md:grid-cols-2">
         {site.whatIDo.map((card, i) => (
           <Reveal key={card.title} delay={i * 0.12} className="h-full">
-            <div className="h-full rounded border border-line bg-surface p-8 transition-all duration-300 hover:-translate-y-1 hover:border-accent/60">
+            <div className="h-full rounded border border-line bg-surface p-8 transition-[transform,border-color,box-shadow] duration-300 hover:border-accent/60 hover:shadow-[0_12px_40px_-12px_rgba(52,211,153,0.25)] motion-safe:hover:-translate-y-1">
               <span className="font-mono text-2xl text-accent">{card.glyph}</span>
               <h3 className="mt-4 text-xl font-semibold">{card.title}</h3>
               <ul className="mt-4 space-y-2 text-muted">

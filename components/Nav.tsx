@@ -1,15 +1,39 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "motion/react";
 import { site } from "@/lib/content";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 200,
+    damping: 40,
+    restDelta: 0.001,
+  });
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const ids = site.nav.map((item) => item.href.slice(1));
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+      const probe = window.scrollY + window.innerHeight * 0.4;
+      let current: string | null = null;
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= probe) current = `#${id}`;
+      }
+      setActive(current);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -21,6 +45,11 @@ export function Nav() {
         scrolled ? "border-b border-line bg-bg/80 backdrop-blur-md" : "bg-transparent"
       }`}
     >
+      <motion.span
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-0.5 origin-left bg-accent"
+        style={{ scaleX: reduce ? scrollYProgress : smoothProgress }}
+      />
       <nav className="mx-auto flex h-16 max-w-[1100px] items-center justify-between px-6">
         <a href="#top" className="font-mono text-sm tracking-widest text-accent">
           {site.initials}
@@ -30,10 +59,16 @@ export function Nav() {
             <a
               key={item.href}
               href={item.href}
-              className="group relative text-sm text-muted transition-colors hover:text-ink"
+              className={`group relative text-sm transition-colors hover:text-ink ${
+                active === item.href ? "text-ink" : "text-muted"
+              }`}
             >
               {item.label}
-              <span className="absolute -bottom-1 left-0 h-px w-0 bg-accent transition-all duration-300 group-hover:w-full" />
+              <span
+                className={`absolute -bottom-1 left-0 h-px w-full origin-left bg-accent transition-transform duration-300 ${
+                  active === item.href ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                }`}
+              />
             </a>
           ))}
           <a
@@ -67,7 +102,9 @@ export function Nav() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="text-sm text-muted hover:text-ink"
+                  className={`text-sm hover:text-ink ${
+                    active === item.href ? "text-accent" : "text-muted"
+                  }`}
                 >
                   {item.label}
                 </a>
