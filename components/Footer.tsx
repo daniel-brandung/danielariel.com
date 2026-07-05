@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { site } from "@/lib/content";
 
 export function Footer() {
@@ -9,6 +10,13 @@ export function Footer() {
         </p>
         <p>
           Built with Next.js —{" "}
+          <Link
+            href="/play"
+            className="text-accent underline underline-offset-4 hover:text-accent-soft"
+          >
+            🎯 /play
+          </Link>{" "}
+          —{" "}
           <a
             href="#top"
             className="text-accent underline underline-offset-4 hover:text-accent-soft"

@@ -533,8 +533,9 @@ In `components/game/engine.ts`, add the private constants/helpers and replace `u
 ```ts
 const GRAVITY = 1400; // px/s² for shot chickens
 const OFFSCREEN_MARGIN = 80;
-const POPUP_SECONDS = 0.8;
-const BURST_SECONDS = 0.5;
+// Exported: the component's renderer needs the same lifetimes for fade-out math
+export const POPUP_SECONDS = 0.8;
+export const BURST_SECONDS = 0.5;
 
 function spawnInterval(timeLeft: number): number {
   const progress = 1 - timeLeft / ROUND_SECONDS;
@@ -607,7 +608,7 @@ export function update(state: GameState, dt: number, rand: () => number): Tick {
 }
 ```
 
-(`POPUP_SECONDS` / `BURST_SECONDS` are declared now but first used in Task 4 — if the linter flags them as unused, move those two lines to Task 4 instead.)
+(`POPUP_SECONDS` / `BURST_SECONDS` are exported now but first used in Task 4's aging logic and Task 8's renderer.)
 
 - [ ] **Step 4: Run test to verify it passes**
 
@@ -1292,10 +1293,12 @@ Create `components/game/MoorhuhnGame.tsx`:
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import {
+  BURST_SECONDS,
   CHICKEN_HEIGHT,
   CHICKEN_WIDTH,
   LAYERS,
   MAX_SHELLS,
+  POPUP_SECONDS,
   VIRTUAL_HEIGHT,
   VIRTUAL_WIDTH,
   createInitialState,
@@ -1315,8 +1318,6 @@ import { loadBest, saveBest } from "@/components/game/storage";
 
 const HORIZON_Y = 560;
 const MAX_FRAME_DT = 0.05; // clamp frame spikes so physics stays stable
-const POPUP_LIFE = 0.8; // keep in sync with engine's POPUP_SECONDS
-const BURST_LIFE = 0.5; // keep in sync with engine's BURST_SECONDS
 // Clicking/tapping the shell readout reloads instead of shooting (spec)
 const SHELL_HUD = { x: 16, y: VIRTUAL_HEIGHT - 88, w: 232, h: 64 };
 
@@ -1437,7 +1438,7 @@ function drawScene(ctx: CanvasRenderingContext2D, s: SceneInput): void {
 
   // Feather bursts
   for (const b of state.bursts) {
-    const t = b.age / BURST_LIFE;
+    const t = b.age / BURST_SECONDS;
     ctx.globalAlpha = 1 - t;
     for (let i = 0; i < 8; i++) {
       const angle = (i / 8) * Math.PI * 2;
@@ -1453,7 +1454,7 @@ function drawScene(ctx: CanvasRenderingContext2D, s: SceneInput): void {
   // Score popups
   ctx.textAlign = "center";
   for (const p of state.popups) {
-    const t = p.age / POPUP_LIFE;
+    const t = p.age / POPUP_SECONDS;
     ctx.globalAlpha = 1 - t;
     ctx.fillStyle = "#6ee7b7";
     ctx.font = `600 26px ${monoFont}`;
