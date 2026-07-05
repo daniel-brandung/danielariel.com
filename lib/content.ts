@@ -27,6 +27,11 @@ export const site = {
         "AI-supported content pipelines in composable CMS stacks",
         "Use-case evaluation, tooling selection, and rollout advisory",
       ],
+      talk: {
+        event: "Masterclass · K5 Conference 2025",
+        title: "UX, Code, AI — 5 real lessons learned from using AI with Vercel v0",
+        url: "https://k5.de/video/ux-code-ai-5-real-lessons-learned-from-using-ai-with-vercel-v0/",
+      },
     },
     {
       glyph: "</>",

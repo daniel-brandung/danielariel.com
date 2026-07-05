@@ -8,6 +8,9 @@ describe("site content", () => {
   it("links to LinkedIn over https", () => {
     expect(site.linkedin).toMatch(/^https:\/\/www\.linkedin\.com\//);
   });
+  it("links the K5 talk over https", () => {
+    expect(site.whatIDo[0].talk.url).toMatch(/^https:\/\/k5\.de\//);
+  });
   it("nav matches the section anchors the page renders", () => {
     expect(site.nav.map((n) => n.href)).toEqual([
       "#about",

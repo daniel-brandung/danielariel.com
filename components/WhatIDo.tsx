@@ -21,6 +21,22 @@ export function WhatIDo() {
                   </li>
                 ))}
               </ul>
+              {"talk" in card && (
+                <a
+                  href={card.talk.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/talk mt-6 block border-t border-line pt-5"
+                >
+                  <p className="font-mono text-xs text-muted">
+                    <span aria-hidden>{"// "}</span>
+                    watch my talk — {card.talk.event}
+                  </p>
+                  <p className="mt-1.5 text-pretty text-sm text-ink transition-colors group-hover/talk:text-accent">
+                    {card.talk.title} <span aria-hidden>↗</span>
+                  </p>
+                </a>
+              )}
             </div>
           </Reveal>
         ))}
