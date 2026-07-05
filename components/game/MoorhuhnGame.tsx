@@ -465,7 +465,7 @@ export function MoorhuhnGame() {
         type="button"
         onClick={toggleMute}
         aria-pressed={!muted}
-        className="absolute left-3 top-3 rounded border border-line bg-bg/70 px-2 py-1 font-mono text-xs text-muted hover:text-ink"
+        className="absolute left-3 top-3 z-10 rounded border border-line bg-bg/70 px-2 py-1 font-mono text-xs text-muted hover:text-ink"
       >
         {muted ? "🔇 sound off" : "🔊 sound on"}
       </button>
