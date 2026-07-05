@@ -45,7 +45,7 @@ export const site = {
       org: "BRANDUNG",
       period: "Mar 2025 — Present",
       summary: [
-        "Deliberate return to hands-on engineering — doubling down on technical depth in frontend and AI.",
+        "Back to full-time hands-on engineering — doubling down on technical depth in frontend and AI.",
         "Introducing AI-assisted development workflows, integrating LLM-powered features, and building AI-supported content pipelines in composable CMS stacks.",
         "Building enterprise web platforms with React, Next.js, TypeScript, and GraphQL.",
       ],
@@ -55,8 +55,8 @@ export const site = {
       org: "BRANDUNG",
       period: "Jun 2023 — Mar 2025",
       summary: [
-        "Leadership chapter on the business side — closer to clients, strategy, and delivery.",
-        "After parental leave, made a conscious choice of craft over the management track and returned to an IC role.",
+        "Led a full business unit — clients, strategy, and delivery — while staying hands-on: roughly 50% of my time spent building, leading the unit's developers as technical lead.",
+        "After the birth of my son, worked part-time for six months, then returned full-time as Senior Frontend Developer & Consultant — a deliberate choice of craft over the management track.",
       ],
     },
     {
