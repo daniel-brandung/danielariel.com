@@ -107,6 +107,27 @@ export function resume(state: GameState): GameState {
   return state.phase === "paused" ? { ...state, phase: "playing" } : state;
 }
 
+export function shoot(state: GameState, x: number, y: number): Tick {
+  if (state.phase !== "playing" || state.reloading) return { state, events: [] };
+  if (state.shells === 0) return { state, events: [{ type: "empty" }] };
+  void x;
+  void y; // hit detection lands in Task 4
+  return {
+    state: { ...state, shells: state.shells - 1 },
+    events: [{ type: "shot" }],
+  };
+}
+
+export function startReload(state: GameState): Tick {
+  if (state.phase !== "playing" || state.reloading || state.shells === MAX_SHELLS) {
+    return { state, events: [] };
+  }
+  return {
+    state: { ...state, reloading: true, reloadTimeLeft: RELOAD_SECONDS },
+    events: [{ type: "reloadStart" }],
+  };
+}
+
 export function update(state: GameState, dt: number, rand: () => number): Tick {
   if (state.phase !== "playing") return { state, events: [] };
   void rand; // used from Task 3 onward
@@ -114,6 +135,15 @@ export function update(state: GameState, dt: number, rand: () => number): Tick {
   const next = { ...state };
 
   next.timeLeft = Math.max(0, next.timeLeft - dt);
+
+  if (next.reloading) {
+    next.reloadTimeLeft = Math.max(0, next.reloadTimeLeft - dt);
+    if (next.reloadTimeLeft === 0) {
+      next.reloading = false;
+      next.shells = MAX_SHELLS;
+      events.push({ type: "reloadEnd" });
+    }
+  }
 
   if (next.timeLeft === 0) {
     next.phase = "ended";
