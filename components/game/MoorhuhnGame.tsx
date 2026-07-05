@@ -257,11 +257,7 @@ export function MoorhuhnGame() {
   const [endScore, setEndScore] = useState(0);
   const [best, setBest] = useState(0);
   const [isNewBest, setIsNewBest] = useState(false);
-
-  const phaseRef = useRef(phase);
-  useEffect(() => {
-    phaseRef.current = phase;
-  }, [phase]);
+  const [announcement, setAnnouncement] = useState("");
 
   const applyTick = useCallback((tick: Tick) => {
     stateRef.current = tick.state;
@@ -293,8 +289,13 @@ export function MoorhuhnGame() {
           setEndScore(event.score);
           setIsNewBest(newBest);
           setPhase("ended");
+          setAnnouncement(
+            `Round over. Score ${event.score}.${newBest ? " New personal best!" : ""}`,
+          );
           break;
         }
+        default:
+          event satisfies never;
       }
     }
   }, []);
@@ -339,7 +340,7 @@ export function MoorhuhnGame() {
     }
 
     const pauseGame = () => {
-      if (phaseRef.current === "playing") {
+      if (stateRef.current.phase === "playing") {
         stateRef.current = pause(stateRef.current);
         setPhase("paused");
       }
@@ -351,9 +352,9 @@ export function MoorhuhnGame() {
       if (event.key === "r" || event.key === "R") {
         applyTick(startReload(stateRef.current));
       } else if (event.key === "Escape") {
-        if (phaseRef.current === "playing") {
+        if (stateRef.current.phase === "playing") {
           pauseGame();
-        } else if (phaseRef.current === "paused") {
+        } else if (stateRef.current.phase === "paused") {
           stateRef.current = resume(stateRef.current);
           setPhase("playing");
         }
@@ -420,7 +421,7 @@ export function MoorhuhnGame() {
   };
 
   const onPointerDown = (event: React.PointerEvent<HTMLCanvasElement>) => {
-    if (phaseRef.current !== "playing") return;
+    if (stateRef.current.phase !== "playing") return;
     const p = toVirtual(event);
     pointerRef.current = { ...p, inside: true };
     const inShellHud =
@@ -434,6 +435,7 @@ export function MoorhuhnGame() {
   const begin = () => {
     stateRef.current = startRound(stateRef.current);
     setPhase("playing");
+    setAnnouncement("");
   };
 
   const resumeGame = () => {
@@ -453,6 +455,10 @@ export function MoorhuhnGame() {
       ref={wrapRef}
       className="relative w-full max-w-[1100px] overflow-hidden rounded-xl border border-line bg-surface"
     >
+      <div aria-live="polite" className="sr-only">
+        {announcement}
+      </div>
+
       <canvas
         ref={canvasRef}
         onPointerMove={onPointerMove}
@@ -501,7 +507,7 @@ export function MoorhuhnGame() {
       {phase === "ended" && (
         <Overlay>
           <h2 className="text-2xl font-semibold">Round over</h2>
-          <p aria-live="polite" className="font-mono text-lg">
+          <p className="font-mono text-lg">
             Score: <span className="text-accent">{endScore}</span> · Best: {best}
             {isNewBest && <span className="ml-2 text-accent-soft">New personal best!</span>}
           </p>

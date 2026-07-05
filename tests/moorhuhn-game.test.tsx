@@ -66,4 +66,11 @@ describe("MoorhuhnGame", () => {
     expect(window.localStorage.getItem("moorhuhn.muted")).toBe("0");
     expect(screen.getByRole("button", { name: /sound on/i })).toBeTruthy();
   });
+
+  it("mounts a persistent aria-live region so round-end announcements are reliably read", () => {
+    const { container } = render(<MoorhuhnGame />);
+    const liveRegion = container.querySelector('[aria-live="polite"]');
+    expect(liveRegion).toBeTruthy();
+    expect(liveRegion?.textContent).toBe("");
+  });
 });
