@@ -23,7 +23,7 @@ import {
 } from "@/components/game/engine";
 import { loadChickenSprites, type ChickenSprites } from "@/components/game/sprites";
 import { Sfx } from "@/components/game/audio";
-import { loadBest, saveBest } from "@/components/game/storage";
+import { CLASSIC_BEST_KEY, loadBest, saveBest } from "@/components/game/storage";
 
 const HORIZON_Y = 560;
 const MAX_FRAME_DT = 0.05; // clamp frame spikes so physics stays stable
@@ -282,9 +282,9 @@ export function MoorhuhnGame() {
           break;
         case "roundEnd": {
           sfx?.jingle();
-          const previousBest = loadBest();
+          const previousBest = loadBest(CLASSIC_BEST_KEY);
           const newBest = event.score > previousBest;
-          if (newBest) saveBest(event.score);
+          if (newBest) saveBest(CLASSIC_BEST_KEY, event.score);
           setBest(newBest ? event.score : previousBest);
           setEndScore(event.score);
           setIsNewBest(newBest);
@@ -303,7 +303,7 @@ export function MoorhuhnGame() {
   useEffect(() => {
     sfxRef.current = new Sfx();
     setMutedState(sfxRef.current.muted);
-    setBest(loadBest());
+    setBest(loadBest(CLASSIC_BEST_KEY));
     loadChickenSprites()
       .then((sprites) => {
         spritesRef.current = sprites;
