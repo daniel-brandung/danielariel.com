@@ -121,4 +121,40 @@ export class Sfx {
       osc.stop(t + i * 0.13 + 0.32);
     });
   }
+
+  /** Rising ding when the combo multiplier climbs; pitch scales with the multiplier. */
+  combo(multiplier: number): void {
+    const ctx = this.audio();
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    const base = 440 * Math.pow(1.25, Math.min(4, multiplier));
+    const osc = ctx.createOscillator();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(base, t);
+    osc.frequency.exponentialRampToValueAtTime(base * 1.5, t + 0.09);
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.14, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.15);
+  }
+
+  /** Golden-chicken fanfare: fast bright four-note arpeggio. */
+  fanfare(): void {
+    const ctx = this.audio();
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    [659.25, 830.61, 987.77, 1318.5].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      osc.type = "square";
+      osc.frequency.value = freq;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.09, t + i * 0.07);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.07 + 0.22);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t + i * 0.07);
+      osc.stop(t + i * 0.07 + 0.24);
+    });
+  }
 }
