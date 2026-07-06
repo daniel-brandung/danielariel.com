@@ -131,6 +131,40 @@ export function startReload(state: GameState3D): Tick3D {
   };
 }
 
+function spawnInterval(timeLeft: number): number {
+  const progress = 1 - timeLeft / ROUND_SECONDS;
+  return SPAWN_INTERVAL_START + (SPAWN_INTERVAL_END - SPAWN_INTERVAL_START) * progress;
+}
+
+// rand call order: band, golden roll (skipped when forced), side, speed,
+// altitude, depth jitter, weave phase — tests depend on this order.
+function spawnChicken(nextId: number, rand: () => number, forceGolden: boolean): Chicken3D {
+  const bands: Band[] = ["far", "mid", "near"];
+  const band = bands[Math.min(2, Math.floor(rand() * 3))];
+  const spec = BANDS[band];
+  const golden = forceGolden || rand() < GOLDEN_CHANCE;
+  const fromLeft = rand() < 0.5;
+  const speed =
+    (spec.speedMin + rand() * (spec.speedMax - spec.speedMin)) *
+    (golden ? GOLDEN_SPEED_FACTOR : 1);
+  const baseY = spec.yMin + rand() * (spec.yMax - spec.yMin);
+  return {
+    id: nextId,
+    band,
+    golden,
+    pos: {
+      x: fromLeft ? -spec.xExtent : spec.xExtent,
+      y: baseY,
+      z: spec.z + (rand() * 2 - 1) * spec.zJitter,
+    },
+    vx: fromLeft ? speed : -speed,
+    baseY,
+    weavePhase: rand() * Math.PI * 2,
+    falling: false,
+    fallVy: 0,
+  };
+}
+
 export function update(state: GameState3D, dt: number, rand: () => number): Tick3D {
   if (state.phase !== "playing") return { state, events: [] };
   const events: GameEvent3D[] = [];
@@ -147,7 +181,47 @@ export function update(state: GameState3D, dt: number, rand: () => number): Tick
     }
   }
 
-  // Task 4 adds chicken movement and spawning here.
+  next.chickens = next.chickens
+    .map((c) => {
+      if (c.falling) {
+        return {
+          ...c,
+          pos: { ...c.pos, y: c.pos.y - (c.fallVy + (GRAVITY * dt) / 2) * dt },
+          fallVy: c.fallVy + GRAVITY * dt,
+        };
+      }
+      const weavePhase = c.weavePhase + dt * GOLDEN_WEAVE_SPEED;
+      return {
+        ...c,
+        pos: {
+          x: c.pos.x + c.vx * dt,
+          y: c.golden ? c.baseY + Math.sin(weavePhase) * GOLDEN_WEAVE_AMPLITUDE : c.pos.y,
+          z: c.pos.z,
+        },
+        weavePhase,
+      };
+    })
+    .filter((c) => {
+      if (c.falling) return c.pos.y > GROUND_Y;
+      return Math.abs(c.pos.x) < BANDS[c.band].xExtent + DESPAWN_MARGIN;
+    });
+
+  next.spawnCooldown -= dt;
+  if (next.spawnCooldown <= 0) {
+    const flying = next.chickens.filter((c) => !c.falling).length;
+    if (flying < MAX_CHICKENS) {
+      const forceGolden = !next.goldenSpawned && next.timeLeft <= ROUND_SECONDS / 2;
+      const spawned = spawnChicken(next.nextId, rand, forceGolden);
+      next.chickens = [...next.chickens, spawned];
+      next.nextId += 1;
+      if (spawned.golden) {
+        next.goldenSpawned = true;
+        events.push({ type: "goldenSpawn" });
+      }
+    }
+    const jitter = 0.7 + rand() * 0.6; // 0.7×–1.3× around the ramp interval
+    next.spawnCooldown = spawnInterval(next.timeLeft) * jitter;
+  }
 
   if (next.timeLeft === 0) {
     next.phase = "ended";
