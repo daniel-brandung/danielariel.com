@@ -131,6 +131,63 @@ export function startReload(state: GameState3D): Tick3D {
   };
 }
 
+/** Distance along the ray to the chicken's hit sphere, or null on a miss. */
+export function rayDistanceTo(ray: Ray, chicken: Chicken3D): number | null {
+  const ox = ray.origin.x - chicken.pos.x;
+  const oy = ray.origin.y - chicken.pos.y;
+  const oz = ray.origin.z - chicken.pos.z;
+  const b = ox * ray.dir.x + oy * ray.dir.y + oz * ray.dir.z;
+  const c = ox * ox + oy * oy + oz * oz - CHICKEN_RADIUS * CHICKEN_RADIUS;
+  const disc = b * b - c;
+  if (disc < 0) return null;
+  const t = -b - Math.sqrt(disc);
+  return t > 0 ? t : null;
+}
+
+export function shoot(state: GameState3D, ray: Ray): Tick3D {
+  if (state.phase !== "playing" || state.reloading) return { state, events: [] };
+  if (state.shells === 0) {
+    // a dry click breaks the combo too
+    const next = state.multiplier > 1 ? { ...state, multiplier: 1 } : state;
+    return { state: next, events: [{ type: "empty" }] };
+  }
+
+  const events: GameEvent3D[] = [{ type: "shot" }];
+  let next = { ...state, shells: state.shells - 1 };
+
+  let target: Chicken3D | undefined;
+  let bestT = Infinity;
+  for (const c of next.chickens) {
+    if (c.falling) continue;
+    const t = rayDistanceTo(ray, c);
+    if (t !== null && t < bestT) {
+      bestT = t;
+      target = c;
+    }
+  }
+
+  if (target) {
+    const hit = target;
+    const points = (hit.golden ? GOLDEN_POINTS : BANDS[hit.band].points) * next.multiplier;
+    const raised = Math.min(MAX_MULTIPLIER, next.multiplier + 1);
+    const raisedFrom = next.multiplier;
+    next = {
+      ...next,
+      score: next.score + points,
+      multiplier: raised,
+      chickens: next.chickens.map((c) =>
+        c.id === hit.id ? { ...c, falling: true, fallVy: 0 } : c,
+      ),
+    };
+    events.push({ type: "hit", points, pos: hit.pos, golden: hit.golden });
+    if (raised > raisedFrom) events.push({ type: "combo", multiplier: raised });
+  } else {
+    next = { ...next, multiplier: 1 };
+  }
+
+  return { state: next, events };
+}
+
 function spawnInterval(timeLeft: number): number {
   const progress = 1 - timeLeft / ROUND_SECONDS;
   return SPAWN_INTERVAL_START + (SPAWN_INTERVAL_END - SPAWN_INTERVAL_START) * progress;
