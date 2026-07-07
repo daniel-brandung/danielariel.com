@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   BURST_SECONDS,
   CHICKEN_HEIGHT,
@@ -24,6 +24,7 @@ import {
 import { loadChickenSprites, type ChickenSprites } from "@/components/game/sprites";
 import { Sfx } from "@/components/game/audio";
 import { CLASSIC_BEST_KEY, loadBest, saveBest } from "@/components/game/storage";
+import { ActionButton, Overlay } from "@/components/game/ui";
 
 const HORIZON_Y = 560;
 const MAX_FRAME_DT = 0.05; // clamp frame spikes so physics stays stable
@@ -515,25 +516,5 @@ export function MoorhuhnGame() {
         </Overlay>
       )}
     </div>
-  );
-}
-
-function Overlay({ children }: { children: ReactNode }) {
-  return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-bg/70 p-6 text-center backdrop-blur-sm">
-      {children}
-    </div>
-  );
-}
-
-function ActionButton({ onClick, children }: { onClick: () => void; children: ReactNode }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="rounded border border-accent bg-accent/10 px-6 py-2 font-mono text-sm text-accent hover:bg-accent/20"
-    >
-      {children}
-    </button>
   );
 }
