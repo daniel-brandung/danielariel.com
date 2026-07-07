@@ -58,3 +58,15 @@ body {
     background: #fff !important;
   }
 }
+
+/* floating score popups for the 3D game */
+@keyframes popup3d {
+  from {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -40px);
+  }
+}
