@@ -1,8 +1,9 @@
-const BEST_KEY = "moorhuhn.best";
+export const CLASSIC_BEST_KEY = "moorhuhn.best";
+export const BEST_3D_KEY = "moorhuhn3d.best";
 
-export function loadBest(): number {
+export function loadBest(key: string): number {
   try {
-    const raw = window.localStorage.getItem(BEST_KEY);
+    const raw = window.localStorage.getItem(key);
     const value = raw === null ? 0 : Number(raw);
     return Number.isFinite(value) && value >= 0 ? value : 0;
   } catch {
@@ -10,9 +11,9 @@ export function loadBest(): number {
   }
 }
 
-export function saveBest(score: number): void {
+export function saveBest(key: string, score: number): void {
   try {
-    window.localStorage.setItem(BEST_KEY, String(score));
+    window.localStorage.setItem(key, String(score));
   } catch {
     // storage unavailable — skip persistence
   }

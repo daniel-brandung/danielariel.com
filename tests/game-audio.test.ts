@@ -27,6 +27,8 @@ describe("Sfx", () => {
       sfx.reload();
       sfx.squawk();
       sfx.jingle();
+      sfx.combo(2);
+      sfx.fanfare();
     }).not.toThrow();
   });
 });

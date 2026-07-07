@@ -91,8 +91,9 @@ Camera sits at a fixed point; yaw limited to about ±75°, pitch about
 - WebGL context creation wrapped in try/catch → friendly fallback card with a
   link to `/play/classic`.
 - Device pixel ratio capped at 2. Geometry/material disposal on unmount. The
-  rAF loop stops while paused or the tab is hidden (reusing the 2D game's
-  blur-pause pattern).
+  engine freezes while paused or the tab is hidden (reusing the 2D game's
+  blur-pause pattern); the render loop keeps drawing the scene behind the
+  pause overlay, and browsers suspend rAF entirely for hidden tabs.
 - Chicken meshes cloned from prototypes; particles instanced; no per-frame
   allocations in the hot path.
 
