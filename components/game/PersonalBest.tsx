@@ -1,14 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { loadBest } from "@/components/game/storage";
 
-// Renders after mount only — localStorage is unavailable during prerender.
+// localStorage is an external store: read it via useSyncExternalStore so the
+// server snapshot (null) hydrates cleanly and cross-tab updates re-render.
+const subscribe = (onStoreChange: () => void) => {
+  window.addEventListener("storage", onStoreChange);
+  return () => window.removeEventListener("storage", onStoreChange);
+};
+
 export function PersonalBest({ storageKey }: { storageKey: string }) {
-  const [best, setBest] = useState<number | null>(null);
-  useEffect(() => {
-    setBest(loadBest(storageKey));
-  }, [storageKey]);
+  const best = useSyncExternalStore(
+    subscribe,
+    () => loadBest(storageKey),
+    () => null,
+  );
   return (
     <span className="font-mono text-xs text-muted">
       {best !== null && best > 0 ? `personal best: ${best}` : "no round played yet"}
