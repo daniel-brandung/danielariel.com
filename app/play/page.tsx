@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { site } from "@/lib/content";
 import { PersonalBest } from "@/components/game/PersonalBest";
-import { BEST_3D_KEY, CLASSIC_BEST_KEY } from "@/components/game/storage";
+import { BEST_3D_KEY, CLASSIC_BEST_KEY, ICY_TOWER_BEST_KEY } from "@/components/game/storage";
 
 export const metadata: Metadata = {
   title: `Play — ${site.name}`,
   description:
-    "Two takes on the classic Moorhuhn shooter: the 2D twilight original and a low-poly 3D sequel.",
+    "Three browser games: the classic Moorhuhn shooter in 2D and 3D, and Icy Tower: Aurora, a neon remix of the endless climber.",
 };
 
 const games = [
@@ -24,6 +24,13 @@ const games = [
     name: "Moorhuhn 3D",
     tagline: "The low-poly sequel. Look around, chase combos, find the golden chicken.",
     storageKey: BEST_3D_KEY,
+  },
+  {
+    href: "/play/icy-tower",
+    emoji: "🧊",
+    name: "Icy Tower: Aurora",
+    tagline: "The endless climber, remixed. Speed makes height, combos build the music, a ghost races you daily.",
+    storageKey: ICY_TOWER_BEST_KEY,
   },
 ];
 
@@ -44,7 +51,7 @@ export default function PlayHubPage() {
           ← back home
         </Link>
       </header>
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {games.map((game) => (
           <Link
             key={game.href}

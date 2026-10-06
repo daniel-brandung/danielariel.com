@@ -219,3 +219,57 @@ body {
     transform: translate(-50%, -40px);
   }
 }
+
+/* Icy Tower: Aurora — combo words and stratum banners */
+@keyframes icy-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.55);
+  }
+  14% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  28% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  78% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -90%) scale(1);
+  }
+}
+
+@keyframes icy-banner {
+  0% {
+    opacity: 0;
+    filter: blur(8px);
+  }
+  15% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.icy-pop {
+  animation: icy-pop 1.7s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+.icy-banner {
+  animation: icy-banner 2.8s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icy-pop {
+    animation-name: icy-banner;
+    transform: translate(-50%, -50%);
+  }
+}
