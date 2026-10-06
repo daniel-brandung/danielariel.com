@@ -3,8 +3,8 @@ import { site } from "@/lib/content";
 
 export function Footer() {
   return (
-    <footer className="border-t border-line">
-      <div className="mx-auto flex max-w-[1100px] flex-wrap items-center justify-between gap-4 px-6 py-8 font-mono text-xs text-muted">
+    <footer className="border-t border-line bg-bg">
+      <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-4 px-5 py-8 text-sm text-muted md:px-12">
         <p>
           © {new Date().getFullYear()} {site.name}
         </p>

@@ -1,49 +1,72 @@
-import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
+import { SpecLabel } from "@/components/Specs";
 import { site } from "@/lib/content";
+
+const SECTORS: Record<string, string> = {
+  publishing: "Publishing",
+  "e-commerce": "E-commerce",
+  fashion: "Fashion",
+  fitness: "Fitness",
+  fmcg: "FMCG",
+};
+
+const COLUMNS = "md:grid-cols-[minmax(0,1.7fr)_minmax(0,0.7fr)_minmax(0,0.9fr)_16px]";
 
 export function Projects() {
   return (
-    <Section id="projects" number="03" title="Selected Projects">
-      <Reveal>
-        <p className="mb-10 max-w-2xl text-pretty text-lg text-muted">{site.projectsIntro}</p>
-      </Reveal>
-      <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {site.projects.map((project, i) => (
-          <li key={project.domain} className="h-full">
-            <Reveal delay={(i % 3) * 0.08} className="h-full">
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex h-full flex-col justify-between rounded border border-line bg-surface p-6 transition-[transform,border-color,box-shadow] duration-300 hover:border-accent/60 hover:shadow-[0_12px_40px_-12px_rgba(52,211,153,0.25)] motion-safe:hover:-translate-y-1"
-              >
-                <div>
-                  <div className="flex items-baseline justify-between gap-4">
-                    <h3 className="text-lg font-semibold transition-colors group-hover:text-accent">
+    <Section id="projects" title="Selected Projects" intro={site.projectsIntro}>
+      <div className="relative">
+        <div className="overflow-hidden rounded-md border border-line bg-surface">
+          <div
+            aria-hidden
+            className={`hidden gap-6 border-b border-line px-6 py-3 text-[13px] font-medium text-muted md:grid ${COLUMNS}`}
+          >
+            <span>Client</span>
+            <span>Sector</span>
+            <span>Site</span>
+          </div>
+          <ul>
+            {site.projects.map((project) => (
+              <li key={project.domain} className="border-b border-line last:border-b-0">
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`group grid min-h-[72px] gap-1 px-5 py-4 transition-colors hover:bg-wash md:items-center md:gap-6 md:px-6 ${COLUMNS}`}
+                >
+                  <span className="min-w-0">
+                    <span className="block text-[17px] font-semibold transition-colors group-hover:text-accent">
                       {project.name}
-                    </h3>
-                    <span
-                      aria-hidden
-                      className="font-mono text-muted transition-colors group-hover:text-accent"
-                    >
-                      ↗
                     </span>
-                  </div>
-                  <p className="mt-2 text-pretty text-sm text-muted">{project.blurb}</p>
-                </div>
-                <p className="mt-5 flex items-baseline justify-between gap-4 font-mono text-xs text-muted">
-                  <span>
-                    <span aria-hidden>{"// "}</span>
-                    {project.tag}
+                    <span className="mt-0.5 block text-pretty text-[15px]/[22px] text-muted">
+                      {project.blurb}
+                    </span>
                   </span>
-                  <span>{project.domain}</span>
-                </p>
-              </a>
-            </Reveal>
-          </li>
-        ))}
-      </ul>
+                  <span className="text-[15px] text-muted max-md:hidden">
+                    {SECTORS[project.tag] ?? project.tag}
+                  </span>
+                  <span className="truncate font-mono text-[13px] max-md:hidden">
+                    {project.domain}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="text-muted transition-[translate,color] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent max-md:hidden"
+                  >
+                    ↗
+                  </span>
+                  <span className="mt-2 text-[13px] text-muted md:hidden">
+                    {SECTORS[project.tag] ?? project.tag},{" "}
+                    <span className="font-mono">{project.domain}</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <SpecLabel className="right-0 top-[calc(100%+12px)] max-md:hidden" delay={0.2}>
+          rows min-height 72, domains in Plex Mono
+        </SpecLabel>
+      </div>
     </Section>
   );
 }

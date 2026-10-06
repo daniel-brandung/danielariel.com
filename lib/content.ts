@@ -12,6 +12,7 @@ export const site = {
   ],
   tagline:
     "Helping teams ship faster with composable architecture and AI-driven workflows.",
+  photoCaption: "Based in Berlin. Works in English, German and Hebrew.",
   about: [
     "I’m Daniel — a Senior AI Consultant and Senior Frontend Developer based in Berlin. I help teams ship faster with composable architecture and AI-driven workflows.",
     "On the frontend, I craft robust web experiences with React, Next.js, TypeScript, and GraphQL — in composable stacks built on Contentful and Storyblok, with meticulous attention to CSS and semantic HTML. On the AI side, I introduce AI-assisted development workflows to engineering teams, integrate LLM-powered features into products, and advise stakeholders on where AI genuinely adds value.",
