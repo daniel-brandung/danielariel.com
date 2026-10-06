@@ -1,19 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #0a0a0a;
-  --color-surface: #111113;
-  --color-ink: #ededed;
-  --color-muted: #8f8f94;
-  --color-accent: #34d399;
-  --color-accent-soft: #6ee7b7;
-  --color-line: #26262a;
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-wash: #f7f8fb;
+  --color-ink: #1a1c2b;
+  --color-muted: #5a5f73;
+  --color-accent: #d42a62;
+  --color-accent-soft: #b21e50;
+  --color-line: #e3e5ec;
+  --color-dot: #d9dce4;
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
   scroll-behavior: smooth;
 }
 
@@ -28,11 +31,6 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Seamless film-grain tile, overlaid at ~2% opacity for texture */
-.grain {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -42,20 +40,165 @@ button {
 body {
   background: var(--color-bg);
   color: var(--color-ink);
+  /* spec labels sit just outside their boxes; never let one cause sideways scroll */
+  overflow-x: clip;
+}
+
+/* Graph-paper dots behind the whole page */
+.dot-grid {
+  background-image: radial-gradient(var(--color-dot) 1px, transparent 1.2px);
+  background-size: 24px 24px;
 }
 
 ::selection {
   background: var(--color-accent);
+  color: #fff;
+}
+
+/* ---------- Redline specs ---------- */
+
+.spec {
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s;
+}
+
+[data-specs="off"] .spec {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.spec-vline {
+  position: relative;
+  width: 0;
+  border-left: 1px solid var(--color-accent);
+}
+
+.spec-hline {
+  position: relative;
+  height: 0;
+  border-top: 1px solid var(--color-accent);
+}
+
+.spec-vline::before,
+.spec-vline::after,
+.spec-hline::before,
+.spec-hline::after {
+  content: "";
+  position: absolute;
+}
+
+.spec-vline::before,
+.spec-vline::after {
+  left: -4px;
+  width: 7px;
+  border-top: 1px solid var(--color-accent);
+}
+
+.spec-vline::before {
+  top: 0;
+}
+
+.spec-vline::after {
+  bottom: 0;
+}
+
+.spec-hline::before,
+.spec-hline::after {
+  top: -4px;
+  height: 7px;
+  border-left: 1px solid var(--color-accent);
+}
+
+.spec-hline::before {
+  left: 0;
+}
+
+.spec-hline::after {
+  right: 0;
+}
+
+/* ---------- Hero intro (CSS, so it runs before hydration) ---------- */
+
+@keyframes intro-rise {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+@keyframes intro-fade {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes intro-wipe {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes intro-settle {
+  from {
+    transform: scale(1.1);
+  }
+}
+
+.intro-rise {
+  display: inline-block;
+  animation: intro-rise 0.9s var(--ease-out-quint) both;
+}
+
+.intro-fade {
+  animation: intro-fade 0.7s var(--ease-out-quint) both;
+}
+
+.intro-wipe {
+  animation: intro-wipe 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.intro-settle {
+  animation: intro-settle 1.6s var(--ease-out-quint) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-rise,
+  .intro-fade,
+  .intro-wipe,
+  .intro-settle {
+    animation: none;
+  }
+}
+
+/* ---------- The arcade keeps the original dark palette ---------- */
+
+.arcade {
+  --color-bg: #0a0a0a;
+  --color-surface: #111113;
+  --color-ink: #ededed;
+  --color-muted: #8f8f94;
+  --color-accent: #34d399;
+  --color-accent-soft: #6ee7b7;
+  --color-line: #26262a;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  color-scheme: dark;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+.arcade ::selection {
   color: var(--color-bg);
 }
 
 @media print {
-  html {
-    color-scheme: light;
-  }
-  body {
-    /* the bg-bg utility class on <body> out-specifies an element selector */
-    background: #fff !important;
+  .spec {
+    display: none;
   }
 }
 

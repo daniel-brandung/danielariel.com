@@ -1,25 +1,25 @@
-import { Reveal } from "@/components/Reveal";
-
 export function Section({
   id,
-  number,
   title,
+  intro,
   children,
 }: {
   id: string;
-  number: string;
   title: string;
+  intro?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="mx-auto max-w-[1100px] scroll-mt-24 px-6 py-16 md:py-32">
-      <Reveal>
-        <h2 className="mb-2 font-mono text-sm font-normal text-accent">
-          {number} — {title}
+    <section id={id} className="mx-auto max-w-[1200px] scroll-mt-20 px-5 py-16 md:px-12 md:py-24">
+      <div className="border-t border-line pt-10 md:pt-14">
+        <h2 className="text-[30px]/[38px] font-semibold tracking-[-0.015em] md:text-[40px]/[48px]">
+          {title}
         </h2>
-        <div className="mb-10 h-px w-full bg-line" />
-      </Reveal>
-      {children}
+        {intro && (
+          <p className="mt-4 max-w-[36em] text-pretty text-lg/[1.6] text-muted">{intro}</p>
+        )}
+      </div>
+      <div className="mt-12">{children}</div>
     </section>
   );
 }

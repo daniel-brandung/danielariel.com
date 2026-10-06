@@ -6,11 +6,12 @@ import { Hero } from "@/components/Hero";
 import { Nav } from "@/components/Nav";
 import { Projects } from "@/components/Projects";
 import { Skills } from "@/components/Skills";
+import { SpecsRoot } from "@/components/Specs";
 import { WhatIDo } from "@/components/WhatIDo";
 
 export default function Home() {
   return (
-    <>
+    <SpecsRoot>
       <Nav />
       <main>
         <Hero />
@@ -22,6 +23,6 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
-    </>
+    </SpecsRoot>
   );
 }
