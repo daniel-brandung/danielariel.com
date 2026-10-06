@@ -13,6 +13,10 @@ export const site = {
   tagline:
     "Helping teams ship faster with composable architecture and AI-driven workflows.",
   photoCaption: "Based in Berlin. Works in English, German and Hebrew.",
+  // The CV's profile: the about copy condensed for a one-page CV (teaching,
+  // PSPO and languages have their own CV sections).
+  cvProfile:
+    "Senior AI Consultant and Senior Frontend Developer in Berlin, helping teams ship faster with composable architecture and AI-driven workflows. Builds robust web platforms with React, Next.js, TypeScript, and GraphQL on Contentful and Storyblok, with meticulous attention to CSS and semantic HTML. Introduces AI-assisted development workflows to engineering teams, integrates LLM-powered features into products, and advises stakeholders on where AI genuinely adds value.",
   about: [
     "I’m Daniel — a Senior AI Consultant and Senior Frontend Developer based in Berlin. I help teams ship faster with composable architecture and AI-driven workflows.",
     "On the frontend, I craft robust web experiences with React, Next.js, TypeScript, and GraphQL — in composable stacks built on Contentful and Storyblok, with meticulous attention to CSS and semantic HTML. On the AI side, I introduce AI-assisted development workflows to engineering teams, integrate LLM-powered features into products, and advise stakeholders on where AI genuinely adds value.",
@@ -91,6 +95,13 @@ export const site = {
       ],
     },
   ],
+  sectorLabels: {
+    publishing: "Publishing",
+    "e-commerce": "E-commerce",
+    fashion: "Fashion",
+    fitness: "Fitness",
+    fmcg: "FMCG",
+  } as Record<string, string>,
   projectsIntro:
     "A selection of client platforms I’ve helped build and ship — from publishing and e-commerce to Europe’s biggest fitness brands.",
   projects: [

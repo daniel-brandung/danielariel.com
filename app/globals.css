@@ -202,6 +202,12 @@ body {
   }
 }
 
+/* A4 with the CV's margins; the /cv sheet drops its own padding in print */
+@page {
+  size: A4;
+  margin: 12mm 15mm;
+}
+
 /* floating score popups for the 3D game */
 @keyframes popup3d {
   from {

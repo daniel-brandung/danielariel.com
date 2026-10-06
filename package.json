@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "cv:pdf": "node scripts/generate-cv.mjs"
   },
   "dependencies": {
     "motion": "^12.42.2",

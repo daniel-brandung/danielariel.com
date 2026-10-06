@@ -2,14 +2,6 @@ import { Section } from "@/components/Section";
 import { SpecLabel } from "@/components/Specs";
 import { site } from "@/lib/content";
 
-const SECTORS: Record<string, string> = {
-  publishing: "Publishing",
-  "e-commerce": "E-commerce",
-  fashion: "Fashion",
-  fitness: "Fitness",
-  fmcg: "FMCG",
-};
-
 const COLUMNS = "md:grid-cols-[minmax(0,1.7fr)_minmax(0,0.7fr)_minmax(0,0.9fr)_16px]";
 
 export function Projects() {
@@ -43,7 +35,7 @@ export function Projects() {
                     </span>
                   </span>
                   <span className="text-[15px] text-muted max-md:hidden">
-                    {SECTORS[project.tag] ?? project.tag}
+                    {site.sectorLabels[project.tag] ?? project.tag}
                   </span>
                   <span className="truncate font-mono text-[13px] max-md:hidden">
                     {project.domain}
@@ -55,7 +47,7 @@ export function Projects() {
                     ↗
                   </span>
                   <span className="mt-2 text-[13px] text-muted md:hidden">
-                    {SECTORS[project.tag] ?? project.tag},{" "}
+                    {site.sectorLabels[project.tag] ?? project.tag},{" "}
                     <span className="font-mono">{project.domain}</span>
                   </span>
                 </a>
