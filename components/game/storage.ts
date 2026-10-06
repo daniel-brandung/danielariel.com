@@ -1,5 +1,6 @@
 export const CLASSIC_BEST_KEY = "moorhuhn.best";
 export const BEST_3D_KEY = "moorhuhn3d.best";
+export const ICY_TOWER_BEST_KEY = "icytower.best";
 
 export function loadBest(key: string): number {
   try {

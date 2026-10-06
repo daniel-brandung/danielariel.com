@@ -23,18 +23,20 @@ describe("play hub", () => {
     cleanup();
   });
 
-  it("links to both games", () => {
+  it("links to every game", () => {
     render(<PlayHubPage />);
     const classic = screen.getByRole("link", { name: /moorhuhn classic/i });
     const threeD = screen.getByRole("link", { name: /moorhuhn 3d/i });
+    const tower = screen.getByRole("link", { name: /icy tower/i });
     expect(classic.getAttribute("href")).toBe("/play/classic");
     expect(threeD.getAttribute("href")).toBe("/play/3d");
+    expect(tower.getAttribute("href")).toBe("/play/icy-tower");
   });
 
   it("shows a stored personal best per game", async () => {
     window.localStorage.setItem("moorhuhn.best", "120");
     render(<PlayHubPage />);
     expect(await screen.findByText("personal best: 120")).toBeDefined();
-    expect(screen.getAllByText(/no round played yet/i)).toHaveLength(1);
+    expect(screen.getAllByText(/no round played yet/i)).toHaveLength(2);
   });
 });
